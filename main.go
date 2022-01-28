@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/koly23/rainer/labels"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -35,7 +36,9 @@ func main() {
 			"message": "pong",
 		})
 	})
-	search()
+	//search()
 	//r.POST("/search", search)
-	r.Run("localhost:18080") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	r.GET("/labels", labels.All)
+	r.POST("/labels", labels.Create)
+	r.Run("localhost:8080") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
