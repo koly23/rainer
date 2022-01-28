@@ -8,7 +8,7 @@ import (
 )
 
 func Create(c *gin.Context) {
-	oneDb := db.New()
+	oneDb := db.NewDb()
 	data, err := c.GetRawData()
 	if err != nil {
 		log.Println(err)
@@ -25,7 +25,7 @@ func Create(c *gin.Context) {
 }
 
 func All(c *gin.Context) {
-	oneDb := db.New()
+	oneDb := db.NewDb()
 	all := oneDb.All(db.Labels, 0, 0)
 	c.JSON(200, &all)
 }

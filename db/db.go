@@ -18,7 +18,7 @@ type Db struct {
 	client *mongo.Client
 }
 
-func New() Db {
+func NewDb() Db {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(databaseUrl))
