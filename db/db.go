@@ -2,10 +2,10 @@ package db
 
 import (
 	"context"
+	"github.com/koly23/rainer/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"log"
 	"time"
 )
 
@@ -23,7 +23,7 @@ func NewDb() Db {
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(databaseUrl))
 	if err != nil {
-		log.Fatal(err)
+		logger.InfoE("connect db error", err)
 	}
 	return Db{
 		client: client,
@@ -35,13 +35,13 @@ func (db Db) All(collection string, page int, size int) []bson.D {
 	defer cancel()
 	cursor, err := db.client.Database(database).Collection(collection).Find(ctx, bson.D{})
 	if err != nil {
-		log.Fatal(err)
+		logger.InfoE("db find error", err)
 	}
 	var results []bson.D
 	if err = cursor.All(ctx, &results); err != nil {
-		log.Fatal(err)
+		logger.InfoE("db find all error", err)
 	}
-	log.Println("find all labels", results)
+	logger.InfoA("find all labels", results)
 	return results
 }
 
@@ -50,7 +50,7 @@ func (db Db) Create(collection string, content interface{}) interface{} {
 	defer cancel()
 	result, err := db.client.Database(database).Collection(collection).InsertOne(ctx, content)
 	if err != nil {
-		log.Fatal(err)
+		logger.InfoE("db insert error", err)
 	}
 	return result.InsertedID
 }

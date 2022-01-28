@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/koly23/rainer/labels"
+	"github.com/koly23/rainer/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -16,13 +17,12 @@ func search() {
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://10.32.179.223:27017"))
 	if err != nil {
-		fmt.Println("cannot connect to mongodb")
-		fmt.Println(err)
+		logger.InfoE("cannot connect to mongodb", err)
 	}
 	collection := client.Database("test").Collection("books")
 	res, err := collection.InsertOne(context.Background(), bson.M{"hello": "world"})
 	if err != nil {
-		fmt.Println("error")
+		logger.InfoE("inert error", err)
 	}
 	id := res.InsertedID
 	fmt.Println("id ", id)
@@ -36,8 +36,6 @@ func main() {
 			"message": "pong",
 		})
 	})
-	//search()
-	//r.POST("/search", search)
 	r.GET("/labels", labels.All)
 	r.POST("/labels", labels.Create)
 	r.Run("localhost:8080") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
