@@ -11,7 +11,9 @@ import (
 
 const database = "rainer"
 const Labels = "labels"
-const databaseUrl = "mongodb://10.32.179.223:27017"
+
+//const databaseUrl = "mongodb://10.32.179.223:27017"
+const databaseUrl = "mongodb://127.0.0.1:27017"
 const timeout = 10 * time.Second
 
 type Db struct {

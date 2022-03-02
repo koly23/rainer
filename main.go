@@ -9,8 +9,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"net/http"
 	"time"
 )
+
+const apiPrefix = "/api/"
 
 func search() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -36,7 +39,14 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.GET("/labels", labels.All)
-	r.POST("/labels", labels.Create)
-	r.Run("localhost:8080") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	//r.GET("/labels", labels.All)
+	route(http.MethodGet, "labels", labels.All, r)
+	route(http.MethodPost, "labels", labels.Create, r)
+	//r.POST("/labels", labels.Create)
+	r.Run("localhost:9999") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+}
+
+func route(method string, path string, handler gin.HandlerFunc, r *gin.Engine) {
+	path = apiPrefix + path
+	r.Handle(method, path, handler)
 }

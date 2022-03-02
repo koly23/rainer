@@ -1,0 +1,17 @@
+
+### create label
+POST http://localhost:9999/api/labels
+Content-Type: application/json;
+
+{
+"name": "治法",
+"value": "宣肺"
+}
+
+
+### all
+GET http://localhost:9999/api/labels
+
+### delete
+DELETE http://localhost:9999/api/labels/621ed3acadbdbcd1b6f86727
+
